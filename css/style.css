@@ -1,0 +1,8 @@
+ol {
+  list-style: none; }
+
+li {
+  cursor: pointer;
+  padding: .8em; }
+  li:hover {
+    background: #ddd; }
