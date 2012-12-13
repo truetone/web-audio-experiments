@@ -30,7 +30,7 @@ if('webkitAudioContext' in window)
 	sawtooth_volume.connect(context.destination);
 
 	// Triangle wave oscillator
-	oscillator_triangle.type = 3; // 1 = triangle wave
+	oscillator_triangle.type = 3; // 3 = triangle wave
 	oscillator_triangle.frequency.value = 523.25; // C
 	oscillator_triangle.connect(triangle_volume);
 	triangle_volume.connect(context.destination);
