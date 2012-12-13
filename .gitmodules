@@ -1,0 +1,6 @@
+[submodule "css/normalize"]
+	path = css/normalize
+	url = https://github.com/necolas/normalize.css.git
+[submodule "css/substratum"]
+	path = css/substratum
+	url = git@github.com:truetone/Substratum.git
