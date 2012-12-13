@@ -8,18 +8,78 @@
    </head>
    <body class="single column">
 		<h1>Web Audio API</h1>
-		<h2>Notes</h2>
-		<button data-control="start">Start!</button>
-		<button data-control="stop">Make It Stop!</button>
-		<ol class=".sine">
-			<li class="playing" data-frequency="261.63">C</li>
-			<li data-frequency="293.66">D</li>
-			<li data-frequency="329.63">E</li>
-			<li data-frequency="349.23">F</li>
-			<li data-frequency="392">G</li>
-			<li data-frequency="440">A</li>
-			<li data-frequency="493.88">B</li>
-			<li data-frequency="523.25">C</li>
-		</ol>
+
+		<button class="control" id="all-stop" data-control="stop">Make It Stop!</button>
+		<hr>
+
+		<div class="column first">
+			<h2>Sine</h2>
+		
+			<button class="control" id="sine-start" data-control="start">On</button>
+			<button class="control" id="sine-stop" data-control="stop">Off</button>
+			<label for="sine-volume">Volume</label>
+			<input type="range" value="0.5" min="0" max="3" step="0.1" id="sine-volume">
+			<ol class="sine">
+				<li class="playing" data-frequency="261.63">C</li>
+				<li data-frequency="293.66">D</li>
+				<li data-frequency="329.63">E</li>
+				<li data-frequency="349.23">F</li>
+				<li data-frequency="392">G</li>
+				<li data-frequency="440">A</li>
+				<li data-frequency="493.88">B</li>
+				<li data-frequency="523.25">C</li>
+			</ol>
+
+			<h2>Square</h2>
+			<button class="control" id="square-start" data-control="start">On</button>
+			<button class="control" id="square-stop" data-control="stop">Off</button>
+			<label for="square-volume">Volume</label>
+			<input type="range" value="0.5" min="0" max="3" step="0.1" id="square-volume">
+			<ol class="square">
+				<li data-frequency="261.63">C</li>
+				<li data-frequency="293.66">D</li>
+				<li data-frequency="329.63">E</li>
+				<li data-frequency="349.23">F</li>
+				<li class="playing" data-frequency="392">G</li>
+				<li data-frequency="440">A</li>
+				<li data-frequency="493.88">B</li>
+				<li data-frequency="523.25">C</li>
+			</ol>
+
+		</div>
+		<div class="column last">
+			<h2>Sawtooth</h2>
+			<button class="control" id="sawtooth-start" data-control="start">On</button>
+			<button class="control" id="sawtooth-stop" data-control="stop">Off</button>
+			<label for="sawtooth-volume">Volume</label>
+			<input type="range" value="0.5" min="0" max="3" step="0.1" id="sawtooth-volume">
+			<ol class="sawtooth">
+				<li data-frequency="261.63">C</li>
+				<li data-frequency="293.66">D</li>
+				<li data-frequency="329.63">E</li>
+				<li data-frequency="349.23">F</li>
+				<li data-frequency="392">G</li>
+				<li data-frequency="440">A</li>
+				<li class="playing" data-frequency="493.88">B</li>
+				<li data-frequency="523.25">C</li>
+			</ol>
+	
+			<h2>Triangle</h2>
+			<button class="control" id="triangle-start" data-control="start">On</button>
+			<button class="control" id="triangle-stop" data-control="stop">Off</button>
+			<label for="triangle-volume">Volume</label>
+			<input type="range" value="0.5" min="0" max="3" step="0.1" id="triangle-volume">
+			<ol class="triangle">
+				<li data-frequency="261.63">C</li>
+				<li data-frequency="293.66">D</li>
+				<li data-frequency="329.63">E</li>
+				<li data-frequency="349.23">F</li>
+				<li data-frequency="392">G</li>
+				<li data-frequency="440">A</li>
+				<li data-frequency="493.88">B</li>
+				<li class="playing" data-frequency="523.25">C</li>
+			</ol>
+		</div>
+
    </body>
 </html>

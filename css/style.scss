@@ -1,17 +1,39 @@
 @import "normalize/normalize";
 @import "substratum/substratum";
 
+$border-color: #333;
+$light-green: rgba(247,196,31,1);
+$lime-green: rgba(204,243,144,1);
+$red: rgba(255,0,61,1);
+$orange: rgba(252,147,10,1);
+$yellow: rgba(247,196,31,1);
+
 ol {
-	list-style: none;
-	width: 80%;
-}
-li {
-	cursor: pointer;
+	border: 1px solid $border-color;
 	display: inline-block;
-	float: left;
-	height: 300px;
+	list-style: none;
+	padding: 0;
+}
+
+li {
+	border-left: 1px solid $border-color;
+	cursor: pointer;
+	display: table-cell;
+	height: 150px;
 	padding: .8em;
+	vertical-align: bottom;
 	&:hover {
 		background: #ddd;
+	}
+}
+
+input {
+	clear: both;
+}
+
+.playing {
+	background: $red;
+	&:hover {
+		background: $red;
 	}
 }
