@@ -3,9 +3,13 @@
 
 ol {
 	list-style: none;
+	width: 80%;
 }
 li {
 	cursor: pointer;
+	display: inline-block;
+	float: left;
+	height: 300px;
 	padding: .8em;
 	&:hover {
 		background: #ddd;

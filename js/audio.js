@@ -36,6 +36,5 @@ $(function()
 	{
 		frequency = $(this).data('frequency');
 		oscillator_sine.frequency.value = frequency;
-		oscillator_sine.noteOn(0);
 	});
 });
