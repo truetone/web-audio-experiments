@@ -18,3 +18,9 @@ All have a single-octave major scale with volume control.
 
 * [Bring you Audio API Boombox!](http://advent2012.digitpaint.nl/10/)
 * [Playing Sounds with the Web Audio API](http://developer.apple.com/library/safari/#documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/PlayingandSynthesizingSounds/PlayingandSynthesizingSounds.html)
+
+##Reading List
+
+* [Web Audio API -- Getting Started](http://creativejs.com/resources/web-audio-api-getting-started/)
+* [Making sine, square, sawtooth and triangle waves](http://stuartmemo.com/making-sine-square-sawtooth-and-triangle-waves/)
+* [HTML5 and the Web Audio API are BFFs!](http://updates.html5rocks.com/2012/02/HTML5-audio-and-the-Web-Audio-API-are-BFFs)
