@@ -1,40 +1,28 @@
-if('webkitAudioContext' in window)
+if (typeof AudioContext == "function" || typeof webkitAudioContext == "function")
 {
+	/* Create the context */
 	var context = new webkitAudioContext();
+	
+	/* Set up volume controls */
 	var sine_volume = context.createGainNode();
 	var square_volume = context.createGainNode();
 	var sawtooth_volume = context.createGainNode();
 	var triangle_volume = context.createGainNode();
+
+	/* Set panning controls */
+	var sine_panner = context.createPanner();
+	var square_panner = context.createPanner();
+	var sawtooth_panner = context.createPanner();
+	var triangle_panner = context.createPanner();
+	
+	/* Set up the oscillators */
 	var oscillator_sine = context.createOscillator();
 	var oscillator_square = context.createOscillator();
 	var oscillator_sawtooth = context.createOscillator();
 	var oscillator_triangle = context.createOscillator();
+
+	/* Set the default frequency */
 	var default_frequency = 261.33; // Middle C
-
-	// Sine wave oscillator
-	oscillator_sine.type = 0; // 0 = sine wave
-	oscillator_sine.frequency.value = default_frequency;
-	oscillator_sine.connect(sine_volume); // Route to volume
-	sine_volume.connect(context.destination); // Route to speakers
-
-	// Square wave oscillator
-	oscillator_square.type = 1; // 1 = square wave
-	oscillator_square.frequency.value = 392; // G
-	oscillator_square.connect(square_volume);
-	square_volume.connect(context.destination);
-
-	// Sawtooth wave oscillator
-	oscillator_sawtooth.type = 2; // 2 = sawtooth wave
-	oscillator_sawtooth.frequency.value = 493.88; // B
-	oscillator_sawtooth.connect(sawtooth_volume);
-	sawtooth_volume.connect(context.destination);
-
-	// Triangle wave oscillator
-	oscillator_triangle.type = 3; // 3 = triangle wave
-	oscillator_triangle.frequency.value = 523.25; // C
-	oscillator_triangle.connect(triangle_volume);
-	triangle_volume.connect(context.destination);
-
 }
 else
 {
@@ -82,26 +70,26 @@ $(function()
 
 			if (id == 'sine-stop')
 			{
-				oscillator_sine.noteOff(0);
+				oscillator_sine.disconnect();
 			}
 			else if (id == 'square-stop')
 			{
-				oscillator_square.noteOff(0);
+				oscillator_square.disconnect();
 			}
 			else if (id == 'sawtooth-stop')
 			{
-				oscillator_sawtooth.noteOff(0);
+				oscillator_sawtooth.disconnect();
 			}
 			else if (id == 'triangle-stop')
 			{
-				oscillator_triangle.noteOff(0);
+				oscillator_triangle.disconnect();
 			}
 			else if (id == 'all-stop')
 			{
-				oscillator_sine.noteOff(0);
-				oscillator_square.noteOff(0);
-				oscillator_sawtooth.noteOff(0);
-				oscillator_triangle.noteOff(0);
+				oscillator_sine.disconnect();
+				oscillator_square.disconnect();
+				oscillator_sawtooth.disconnect();
+				oscillator_triangle.disconnect();
 			}
 		}
 
@@ -110,18 +98,51 @@ $(function()
 			if (id == 'sine-start')
 			{
 				oscillator_sine.noteOn(0);
+				oscillator_sine.type = 0; // 0 = sine wave
+
+				// Assign a frequency
+				oscillator_sine.frequency.value = default_frequency;
+
+				// Set the position of the panner (x, y, z)
+				sine_panner.setPosition(-66, 0, 0);
+
+				// Connect the oscillator to the panner
+				oscillator_sine.connect(sine_panner);
+
+				// Connect the panner to the volume control
+				sine_panner.connect(sine_volume);
+
+				sine_volume.connect(context.destination);
 			}
 			else if (id == 'square-start')
 			{
 				oscillator_square.noteOn(0);
+				oscillator_square.type = 1; // 1 = square wave
+				oscillator_square.frequency.value = 392; // G
+				square_panner.setPosition(-33, 0 ,0);
+				oscillator_square.connect(square_panner);
+				square_panner.connect(square_volume);
+				square_volume.connect(context.destination);
 			}
 			else if (id == 'sawtooth-start')
 			{
 				oscillator_sawtooth.noteOn(0);
+				oscillator_sawtooth.type = 2; // 2 = sawtooth wave
+				oscillator_sawtooth.frequency.value = 493.88; // B
+				sawtooth_panner.setPosition(33, 0, 0);
+				oscillator_sawtooth.connect(sawtooth_panner);
+				sawtooth_panner.connect(sawtooth_volume);
+				sawtooth_volume.connect(context.destination);
 			}
 			else if (id == 'triangle-start')
 			{
 				oscillator_triangle.noteOn(0);
+				oscillator_triangle.type = 3; // 3 = triangle wave
+				oscillator_triangle.frequency.value = 523.25; // C
+				triangle_panner.setPosition(66, 0, 0);
+				oscillator_triangle.connect(triangle_panner);
+				triangle_panner.connect(triangle_volume);
+				triangle_volume.connect(context.destination);
 			}
 		}
 	});
