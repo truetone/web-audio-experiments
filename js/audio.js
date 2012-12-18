@@ -3,180 +3,121 @@ if (typeof AudioContext == "function" || typeof webkitAudioContext == "function"
 	/* Create the context */
 	var context = new webkitAudioContext();
 	
-	/* Set up volume controls */
-	var sine_volume = context.createGainNode();
-	var square_volume = context.createGainNode();
-	var sawtooth_volume = context.createGainNode();
-	var triangle_volume = context.createGainNode();
+	var volume_controls = new Array();
 
-	/* Set panning controls */
-	var sine_panner = context.createPanner();
-	var square_panner = context.createPanner();
-	var sawtooth_panner = context.createPanner();
-	var triangle_panner = context.createPanner();
-	
-	/* Set up the oscillators */
-	var oscillator_sine = context.createOscillator();
-	var oscillator_square = context.createOscillator();
-	var oscillator_sawtooth = context.createOscillator();
-	var oscillator_triangle = context.createOscillator();
+	/* Oscillator types */
+	var o_types = ['sine', 'square', 'sawtooth', 'triangle'];
+
+	/* Array to store the oscillators */
+	var oscillators = new Object;
+
+	/* Array to store controls */
+	var controls = new Object;
 
 	/* Set the default frequency */
 	var default_frequency = 261.33; // Middle C
+
+	/* How low can you go? Answer: Low C. */
+	var base_frequency = 16.35;
+
+	/* Multiple for calculating octaves */
+	var octave_ratio = 1.88776495622381;
+
+	var octave_adjustment = 0;
 }
 else
 {
-	$('body').html('<h1>Error</h1><p>webkitAudioAPI not supported.');
+	$('body').html('<h1>Error</h1><p>Web Audio API not supported.');
 }
 
 $(function()
 {
-	var sine_volume_input = $('#sine-volume');
-	var square_volume_input = $('#square-volume');
-	var sawtooth_volume_input = $('#sawtooth-volume');
-	var triangle_volume_input = $('#triangle-volume');
-
-	sine_volume.gain.value = sine_volume_input.val();
-	square_volume.gain.value = square_volume_input.val();
-	sawtooth_volume.gain.value = sawtooth_volume_input.val();
-	triangle_volume.gain.value = triangle_volume_input.val();
-
-	sine_volume_input.change(function()
+	/* Set up the oscillators */
+	$.each(o_types, function (key, oscillator)
 	{
-		sine_volume.gain.value = $(this).val();
+		oscillators[oscillator] = context.createOscillator();
+		controls[oscillator] = new Object;
+		controls[oscillator].type = key;
+		controls[oscillator].volume_input = $('#' + oscillator + '-volume');
+		controls[oscillator].panner_input = $('#' + oscillator + '-pan');
+		controls[oscillator].gain_node = context.createGainNode();
+		controls[oscillator].gain_node.gain.value = controls[oscillator].volume_input.val();
+		controls[oscillator].panner = context.createPanner();
+		controls[oscillator].panner.setPosition(controls[oscillator].panner_input.val(), 0, 0);
 	});
 
-	square_volume_input.change(function()
+	/* Control the volume */
+	$('.control.volume').change(function ()
 	{
-		square_volume.gain.value = $(this).val();
+		o = $(this).data('oscillator');
+		controls[o].gain_node.gain.value = $(this).val();
 	});
 
-	sawtooth_volume_input.change(function()
+	/* Control the pan */
+	$('.control.pan').change(function ()
 	{
-		sawtooth_volume.gain.value = $(this).val();
+		o = $(this).data('oscillator');
+		controls[o].panner.setPosition($(this).val(), 0, 0);
 	});
 
-	triangle_volume_input.change(function()
-	{
-		triangle_volume.gain.value = $(this).val();
-	});
-
+	/* On/Off Controls */
 	$('.control').on('click', function()
 	{
-		var id = $(this).attr('id');
+		var c = $(this);
+		var control = c.data('control');
+		var action = c.data('action');
+		var o = c.data('oscillator');
 
-		if ($(this).data('control') == "stop")
+		if (control == "stop")
 		{
+			oscillators[o].disconnect();
 
-			if (id == 'sine-stop')
+		}
+		else if (control == 'all-stop')
+		{
+			$.each(oscillators, function (key, oscillator)
 			{
-				oscillator_sine.disconnect();
-			}
-			else if (id == 'square-stop')
-			{
-				oscillator_square.disconnect();
-			}
-			else if (id == 'sawtooth-stop')
-			{
-				oscillator_sawtooth.disconnect();
-			}
-			else if (id == 'triangle-stop')
-			{
-				oscillator_triangle.disconnect();
-			}
-			else if (id == 'all-stop')
-			{
-				oscillator_sine.disconnect();
-				oscillator_square.disconnect();
-				oscillator_sawtooth.disconnect();
-				oscillator_triangle.disconnect();
-			}
+				oscillator.disconnect();
+			});
 		}
 
-		if ($(this).data('control') == "start")
+		if (control == "start")
 		{
-			if (id == 'sine-start')
-			{
-				oscillator_sine.noteOn(0);
-				oscillator_sine.type = 0; // 0 = sine wave
+			var frequency = $('ol.' + o + ' li.playing').data('frequency');
+			var panner_input = $('#' + o + '-pan');
 
-				// Assign a frequency
-				oscillator_sine.frequency.value = default_frequency;
+			// Turn the oscillator on
+			oscillators[o].noteOn(0);
 
-				// Set the position of the panner (x, y, z)
-				sine_panner.setPosition(-66, 0, 0);
+			// Set the oscillator type
+			oscillators[o].type = controls[o].type;
 
-				// Connect the oscillator to the panner
-				oscillator_sine.connect(sine_panner);
+			// Set the frequency
+			oscillators[o].frequency.value = frequency;
 
-				// Connect the panner to the volume control
-				sine_panner.connect(sine_volume);
+			// Set the pan value
+			controls[o].panner.setPosition(panner_input.val(), 0, 0);
+			
+			// Connect the oscillator to the panner
+			oscillators[o].connect(controls[o].panner);
 
-				sine_volume.connect(context.destination);
-			}
-			else if (id == 'square-start')
-			{
-				oscillator_square.noteOn(0);
-				oscillator_square.type = 1; // 1 = square wave
-				oscillator_square.frequency.value = 392; // G
-				square_panner.setPosition(-33, 0 ,0);
-				oscillator_square.connect(square_panner);
-				square_panner.connect(square_volume);
-				square_volume.connect(context.destination);
-			}
-			else if (id == 'sawtooth-start')
-			{
-				oscillator_sawtooth.noteOn(0);
-				oscillator_sawtooth.type = 2; // 2 = sawtooth wave
-				oscillator_sawtooth.frequency.value = 493.88; // B
-				sawtooth_panner.setPosition(33, 0, 0);
-				oscillator_sawtooth.connect(sawtooth_panner);
-				sawtooth_panner.connect(sawtooth_volume);
-				sawtooth_volume.connect(context.destination);
-			}
-			else if (id == 'triangle-start')
-			{
-				oscillator_triangle.noteOn(0);
-				oscillator_triangle.type = 3; // 3 = triangle wave
-				oscillator_triangle.frequency.value = 523.25; // C
-				triangle_panner.setPosition(66, 0, 0);
-				oscillator_triangle.connect(triangle_panner);
-				triangle_panner.connect(triangle_volume);
-				triangle_volume.connect(context.destination);
-			}
+			// Connect the panner to the gain-node (volume)
+			controls[o].panner.connect(controls[o].gain_node);
+
+			// Connect the gain node to the output (destination)
+			controls[o].gain_node.connect(context.destination);
 		}
 	});
 
-	$('.sine li').on('mousedown', function()
+	/* Change the frequency (note) */
+	$('li').on('mousedown', function()
 	{
-		frequency = $(this).data('frequency');
-		oscillator_sine.frequency.value = frequency;
-		$('.sine .playing').removeClass('playing');
-		$(this).addClass('playing');
-	});
-
-	$('.square li').on('mousedown', function()
-	{
-		frequency = $(this).data('frequency');
-		oscillator_square.frequency.value = frequency;
-		$('.square .playing').removeClass('playing');
-		$(this).addClass('playing');
-	});
-
-	$('.sawtooth li').on('mousedown', function()
-	{
-		frequency = $(this).data('frequency');
-		oscillator_sawtooth.frequency.value = frequency;
-		$('.sawtooth .playing').removeClass('playing');
-		$(this).addClass('playing');
-	});
-
-	$('.triangle li').on('mousedown', function()
-	{
-		frequency = $(this).data('frequency');
-		oscillator_triangle.frequency.value = frequency;
-		$('.triangle .playing').removeClass('playing');
-		$(this).addClass('playing');
+		var li = $(this);
+		var frequency = li.data('frequency');
+		var o = li.parent('ol').data('oscillator');
+		oscillators[o].frequency.value = frequency;
+		$('.' + o + ' .playing').removeClass('playing');
+		li.addClass('playing');
 	});
 
 });

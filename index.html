@@ -9,17 +9,35 @@
    <body class="single column">
 		<h1>Web Audio API</h1>
 
-		<button class="control" id="all-stop" data-control="stop">Make It Stop!</button>
+		<button class="control" id="all-stop" data-control="all-stop" data-action="stop">Make It Stop!</button>
 		<hr>
 
 		<div class="column first">
-			<h2>Sine</h2>
+			<h2>Wave Type: Sine</h2>
 		
-			<button class="control" id="sine-start" data-control="start">On</button>
-			<button class="control" id="sine-stop" data-control="stop">Off</button>
-			<label for="sine-volume">Volume</label>
-			<input type="range" value="0.5" min="0" max="3" step="0.1" id="sine-volume">
-			<ol class="sine">
+			<button class="control" data-action="start" data-control="start" data-oscillator="sine">On</button>
+			<button class="control" data-action="stop" data-control="stop" data-oscillator="sine">Off</button>
+
+			<h3>Octave</h3>
+			<button class="control octave" data-oscillator="sine" data-octave="-4">0</button>
+			<button class="control octave" data-oscillator="sine" data-octave="-3">1</button>
+			<button class="control octave" data-oscillator="sine" data-octave="-2">2</button>
+			<button class="control octave" data-oscillator="sine" data-octave="-1">3</button>
+			<button class="control octave selected" data-oscillator="sine" data-octave="0">4</button>
+			<button class="control octave" data-oscillator="sine" data-octave="5">5</button>
+			<button class="control octave" data-oscillator="sine" data-octave="6">6</button>
+			<button class="control octave" data-oscillator="sine" data-octave="7">7</button>
+			<button class="control octave" data-oscillator="sine" data-octave="8">8</button>
+
+			<fieldset>
+				<legend>Audio Controls</legend>
+				<label for="sine-volume">Volume</label>
+				<input type="range" value="0.5" min="0" max="3" step="0.1" id="sine-volume" class="control volume" data-oscillator="sine">
+				<label for="sine-pan">Pan</label>
+				<input type="range" value="-25" min="-50" max="50" step="0.1" class="control pan" id="sine-pan" data-oscillator="sine">
+			</fieldset>
+
+			<ol class="sine" data-oscillator="sine">
 				<li class="playing" data-frequency="261.63">C</li>
 				<li data-frequency="293.66">D</li>
 				<li data-frequency="329.63">E</li>
@@ -30,12 +48,30 @@
 				<li data-frequency="523.25">C</li>
 			</ol>
 
-			<h2>Square</h2>
-			<button class="control" id="square-start" data-control="start">On</button>
-			<button class="control" id="square-stop" data-control="stop">Off</button>
-			<label for="square-volume">Volume</label>
-			<input type="range" value="0.5" min="0" max="3" step="0.1" id="square-volume">
-			<ol class="square">
+			<h2>Wave Type: Square</h2>
+			<button class="control" id="square-start" data-control="start" data-oscillator="square">On</button>
+			<button class="control" id="square-stop" data-control="stop" data-oscillator="square">Off</button>
+
+			<h3>Octave</h3>
+			<button class="control octave" data-oscillator="square" data-octave="-4">0</button>
+			<button class="control octave" data-oscillator="square" data-octave="-3">1</button>
+			<button class="control octave" data-oscillator="square" data-octave="-2">2</button>
+			<button class="control octave" data-oscillator="square" data-octave="-1">3</button>
+			<button class="control octave selected" data-oscillator="square" data-octave="0">4</button>
+			<button class="control octave" data-oscillator="square" data-octave="5">5</button>
+			<button class="control octave" data-oscillator="square" data-octave="6">6</button>
+			<button class="control octave" data-oscillator="square" data-octave="7">7</button>
+			<button class="control octave" data-oscillator="square" data-octave="8">8</button>
+
+			<fieldset>
+				<legend>Audio Controls</legend>
+				<label for="square-volume">Volume</label>
+				<input type="range" value="0.5" min="0" max="3" step="0.1" id="square-volume">
+				<label for="square-pan">Pan</label>
+				<input type="range" value="-25" min="-50" max="50" step="0.1" class="control pan" id="square-pan" data-oscillator="square">
+			</fieldset>
+
+			<ol class="square" data-oscillator="square">
 				<li data-frequency="261.63">C</li>
 				<li data-frequency="293.66">D</li>
 				<li data-frequency="329.63">E</li>
@@ -48,12 +84,29 @@
 
 		</div>
 		<div class="column last">
-			<h2>Sawtooth</h2>
-			<button class="control" id="sawtooth-start" data-control="start">On</button>
-			<button class="control" id="sawtooth-stop" data-control="stop">Off</button>
-			<label for="sawtooth-volume">Volume</label>
-			<input type="range" value="0.5" min="0" max="3" step="0.1" id="sawtooth-volume">
-			<ol class="sawtooth">
+			<h2>Wave Type: Sawtooth</h2>
+			<button class="control" id="sawtooth-start" data-control="start" data-oscillator="sawtooth">On</button>
+			<button class="control" id="sawtooth-stop" data-control="stop" data-oscillator="sawtooth">Off</button>
+
+			<h3>Octave</h3>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="-4">0</button>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="-3">1</button>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="-2">2</button>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="-1">3</button>
+			<button class="control octave selected" data-oscillator="sawtooth" data-octave="0">4</button>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="5">5</button>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="6">6</button>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="7">7</button>
+			<button class="control octave" data-oscillator="sawtooth" data-octave="8">8</button>
+
+			<fieldset>
+				<legend>Audio Controls</legend>
+				<label for="sawtooth-volume">Volume</label>
+				<input type="range" value="0.5" min="0" max="3" step="0.1" id="sawtooth-volume">
+				<label for="sawtooth-pan">Pan</label>
+				<input type="range" value="12.5" min="-50" max="50" step="0.1" class="control pan" id="sawtooth-pan" data-oscillator="sawtooth">
+			</fieldset>
+			<ol class="sawtooth" data-oscillator="sawtooth">
 				<li data-frequency="261.63">C</li>
 				<li data-frequency="293.66">D</li>
 				<li data-frequency="329.63">E</li>
@@ -64,12 +117,29 @@
 				<li data-frequency="523.25">C</li>
 			</ol>
 	
-			<h2>Triangle</h2>
-			<button class="control" id="triangle-start" data-control="start">On</button>
-			<button class="control" id="triangle-stop" data-control="stop">Off</button>
-			<label for="triangle-volume">Volume</label>
-			<input type="range" value="0.5" min="0" max="3" step="0.1" id="triangle-volume">
-			<ol class="triangle">
+			<h2>Wave Type: Triangle</h2>
+			<button class="control" id="triangle-start" data-control="start" data-oscillator="triangle">On</button>
+			<button class="control" id="triangle-stop" data-control="stop" data-oscillator="triangle">Off</button>
+
+			<h3>Octave</h3>
+			<button class="control octave" data-oscillator="triangle" data-octave="-4">0</button>
+			<button class="control octave" data-oscillator="triangle" data-octave="-3">1</button>
+			<button class="control octave" data-oscillator="triangle" data-octave="-2">2</button>
+			<button class="control octave" data-oscillator="triangle" data-octave="-1">3</button>
+			<button class="control octave selected" data-oscillator="triangle" data-octave="0">4</button>
+			<button class="control octave" data-oscillator="triangle" data-octave="5">5</button>
+			<button class="control octave" data-oscillator="triangle" data-octave="6">6</button>
+			<button class="control octave" data-oscillator="triangle" data-octave="7">7</button>
+			<button class="control octave" data-oscillator="triangle" data-octave="8">8</button>
+
+			<fieldset>
+				<legend>Audio Controls</legend>
+				<label for="triangle-volume">Volume</label>
+				<input type="range" value="0.5" min="0" max="3" step="0.1" id="triangle-volume">
+				<label for="triangle-pan">Pan</label>
+				<input type="range" value="25" min="-50" max="50" step="0.1" class="control pan" id="triangle-pan" data-oscillator="triangle">
+			</fieldset>
+			<ol class="triangle" data-oscillator="triangle">
 				<li data-frequency="261.63">C</li>
 				<li data-frequency="293.66">D</li>
 				<li data-frequency="329.63">E</li>
