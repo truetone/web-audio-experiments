@@ -50,7 +50,7 @@ $(function()
 	$('.control.volume').change(function ()
 	{
 		var volume = $(this);
-		o = volume.data('oscillator');
+		var o = volume.data('oscillator');
 		controls[o].gain_node.gain.value = volume.val();
 	});
 
@@ -58,8 +58,31 @@ $(function()
 	$('.control.pan').change(function ()
 	{
 		var panner = $(this);
-		o = panner.data('oscillator');
+		var o = panner.data('oscillator');
 		controls[o].panner.setPosition(panner.val(), 0, 0);
+	});
+
+	/* Change the frequency (note) */
+	$('li').on('mousedown', function()
+	{
+		var li = $(this);
+		var frequency = li.data('frequency');
+		var o = li.parent('ol').data('oscillator');
+		oscillators[o].frequency.value = frequency;
+		$('.' + o + ' .playing').removeClass('playing');
+		li.addClass('playing');
+	});
+
+	/* Control octaves */
+	$('.control.octave').click(function ()
+	{
+		var button = $(this);
+		var o = button.data('oscillator');
+		var shift = button.data('octave');
+		var current_frequency = $('ol.' + o + ' .playing').data('frequency');
+		var new_frequency = current_frequency * (shift * octave_ratio);
+		$('.current-frequency').text(new_frequency);
+		oscillators[o].frequency.value = new_frequency;
 	});
 
 	/* On/Off Controls */
@@ -69,19 +92,6 @@ $(function()
 		var control = c.data('control');
 		var action = c.data('action');
 		var o = c.data('oscillator');
-
-		if (control == "stop")
-		{
-			oscillators[o].disconnect();
-
-		}
-		else if (control == 'all-stop')
-		{
-			$.each(oscillators, function (key, oscillator)
-			{
-				oscillator.disconnect();
-			});
-		}
 
 		if (control == "start")
 		{
@@ -109,17 +119,18 @@ $(function()
 			// Connect the gain node to the output (destination)
 			controls[o].gain_node.connect(context.destination);
 		}
-	});
 
-	/* Change the frequency (note) */
-	$('li').on('mousedown', function()
-	{
-		var li = $(this);
-		var frequency = li.data('frequency');
-		var o = li.parent('ol').data('oscillator');
-		oscillators[o].frequency.value = frequency;
-		$('.' + o + ' .playing').removeClass('playing');
-		li.addClass('playing');
-	});
+		if (control == "stop")
+		{
+			oscillators[o].disconnect();
 
+		}
+		else if (control == 'all-stop')
+		{
+			$.each(oscillators, function (key, oscillator)
+			{
+				oscillator.disconnect();
+			});
+		}
+	});
 });
