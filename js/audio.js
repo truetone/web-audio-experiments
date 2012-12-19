@@ -49,15 +49,17 @@ $(function()
 	/* Control the volume */
 	$('.control.volume').change(function ()
 	{
-		o = $(this).data('oscillator');
-		controls[o].gain_node.gain.value = $(this).val();
+		var volume = $(this);
+		o = volume.data('oscillator');
+		controls[o].gain_node.gain.value = volume.val();
 	});
 
 	/* Control the pan */
 	$('.control.pan').change(function ()
 	{
-		o = $(this).data('oscillator');
-		controls[o].panner.setPosition($(this).val(), 0, 0);
+		var panner = $(this);
+		o = panner.data('oscillator');
+		controls[o].panner.setPosition(panner.val(), 0, 0);
 	});
 
 	/* On/Off Controls */
