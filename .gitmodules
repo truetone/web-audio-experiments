@@ -4,3 +4,6 @@
 [submodule "css/substratum"]
 	path = css/substratum
 	url = git@github.com:truetone/Substratum.git
+[submodule "bootstrap"]
+	path = bootstrap
+	url = git@github.com:twitter/bootstrap.git
