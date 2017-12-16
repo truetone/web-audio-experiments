@@ -1,17 +1,16 @@
-if (typeof AudioContext == "function" || typeof webkitAudioContext == "function")
-{
+if (typeof AudioContext == "function" || typeof webkitAudioContext == "function") {
 	/* Create the context */
 	var context = new webkitAudioContext();
-	
-	var volume_controls = new Array();
+
+	var volume_controls = [];
 
 	/* Oscillator types */
 	var o_types = ['sine', 'square', 'sawtooth', 'triangle'];
 
-	/* Array to store the oscillators */
+	/* Object to store the oscillators */
 	var oscillators = {};
 
-	/* Array to store controls */
+	/* Object to store controls */
 	var controls = {};
 
 	/* Set the default frequency */
@@ -24,22 +23,17 @@ if (typeof AudioContext == "function" || typeof webkitAudioContext == "function"
 	var octave_ratio = 1.88776495622381;
 
 	var octave_adjustment = 0;
-}
-else
-{
+} else {
 	$('body').html('<h1>Error</h1><p>Web Audio API not supported.');
 }
 
-$(function()
-{
+$(function() {
 	/* Load the JSON */
-	$.getJSON('/js/notes.json', function (json)
-	{
+	$.getJSON('/js/notes.json', function (json) {
 		var notes = json;
 
 		/* Set up the oscillators */
-		$.each(o_types, function (key, oscillator)
-		{
+		$.each(o_types, function (key, oscillator) {
 			oscillators[oscillator] = context.createOscillator();
 			controls[oscillator] = {};
 			controls[oscillator].type = key;
@@ -52,24 +46,21 @@ $(function()
 		});
 
 		/* Control the volume */
-		$('.control.volume').change(function ()
-		{
+		$('.control.volume').change(function () {
 			var volume = $(this);
 			var o = volume.data('oscillator');
 			controls[o].gain_node.gain.value = volume.val();
 		});
 
 		/* Control the pan */
-		$('.control.pan').change(function ()
-		{
+		$('.control.pan').change(function () {
 			var panner = $(this);
 			var o = panner.data('oscillator');
 			controls[o].panner.setPosition(panner.val(), 0, 0);
 		});
 
 		/* Change the frequency (note) */
-		$('li').on('mousedown', function()
-		{
+		$('li').on('mousedown', function() {
 			var li = $(this);
 			var note = li.data('note');
 			var frequency = notes[note];
@@ -80,8 +71,7 @@ $(function()
 		});
 
 		/* Control octaves */
-		$('.control.octave').click(function ()
-		{
+		$('.control.octave').click(function () {
 			var button = $(this);
 			var o = button.data('oscillator');
 			var shift = button.data('octave');
@@ -92,15 +82,13 @@ $(function()
 		});
 
 		/* On/Off Controls */
-		$('.control').on('click', function()
-		{
+		$('.control').on('click', function() {
 			var c = $(this);
 			var control = c.data('control');
 			var action = c.data('action');
 			var o = c.data('oscillator');
 
-			if (control == "start")
-			{
+			if (control == "start") {
 				// Get the note
 				var playing = $('ol.' + o + ' li.playing').data('note');
 
@@ -121,7 +109,7 @@ $(function()
 
 				// Set the pan value
 				controls[o].panner.setPosition(panner_input.val(), 0, 0);
-				
+
 				// Connect the oscillator to the panner
 				oscillators[o].connect(controls[o].panner);
 
@@ -132,15 +120,11 @@ $(function()
 				controls[o].gain_node.connect(context.destination);
 			}
 
-			if (control == "stop")
-			{
+			if (control == "stop") {
 				oscillators[o].disconnect();
 
-			}
-			else if (control == 'all-stop')
-			{
-				$.each(oscillators, function (key, oscillator)
-				{
+			} else if (control == 'all-stop') {
+				$.each(oscillators, function (key, oscillator) {
 					oscillator.disconnect();
 				});
 			}
